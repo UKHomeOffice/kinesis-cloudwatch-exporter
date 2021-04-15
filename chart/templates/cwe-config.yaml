@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudwatch-exporter
+data:
+  config.yml: |-
+      ---
+      region: eu-west-2
+      metrics:
+      - aws_namespace: AWS/Kinesis
+        aws_metric_name: WriteProvisionedThroughputExceeded
+        aws_dimensions: [StreamName]
+        aws_dimension_select:
+          StreamName: [{{- range .Values.kinesis.stream_name }}{{ . | quote }},{{- end }}]
+        aws_statistics: [Average]
+      - aws_namespace: AWS/Kinesis
+        aws_metric_name: ReadProvisionedThroughputExceeded
+        aws_dimensions: [StreamName]
+        aws_dimension_select:
+          StreamName: [{{- range .Values.kinesis.stream_name }}{{ . | quote }},{{- end }}]
+        aws_statistics: [Average]
+      - aws_namespace: AWS/Kinesis
+        aws_metric_name: GetRecords.IteratorAgeMilliseconds
+        aws_dimensions: [StreamName]
+        aws_dimension_select:
+          StreamName: [{{- range .Values.kinesis.stream_name }}{{ . | quote }},{{- end }}]
+        aws_statistics: [Maximum]
+      - aws_namespace: AWS/Kinesis
+        aws_metric_name: IncomingBytes
+        aws_dimensions: [StreamName, ShardId]
+        aws_dimension_select:
+          StreamName: [{{- range .Values.kinesis.stream_name }}{{ . | quote }},{{- end }}]
+        aws_statistics: [Sum]
+      - aws_namespace: AWS/Kinesis
+        aws_metric_name: IncomingRecords
+        aws_dimensions: [StreamName, ShardId]
+        aws_dimension_select:
+          StreamName: [{{- range .Values.kinesis.stream_name }}{{ . | quote }},{{- end }}]
+        aws_statistics: [Sum]
+      - aws_namespace: AWS/Kinesis
+        aws_metric_name: PutRecords.ThrottledRecords
+        aws_dimensions: [StreamName]
+        aws_dimension_select:
+          StreamName: [{{- range .Values.kinesis.stream_name }}{{ . | quote }},{{- end }}]
+        aws_statistics: [Average]
+      - aws_namespace: AWS/Kinesis
+        aws_metric_name: PutRecords.TotalRecords
+        aws_dimensions: [StreamName]
+        aws_dimension_select:
+          StreamName: [{{- range .Values.kinesis.stream_name }}{{ . | quote }},{{- end }}]
+        aws_statistics: [Average]

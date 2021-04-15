@@ -1,0 +1,20 @@
+cwe:
+  replicas: 1
+  image: quay.io/ukhomeofficedigital/cloudwatch-exporter
+  image_tag: cloudwatch_exporter-0.10.0
+  memory_limit: 500Mi
+  memory_request: 200Mi
+  cpu_limit: 500m
+  cpu_request: 200m
+
+kinesis:
+  stream_name:
+  # This parameter expects a list. For example:
+  # 
+  # stream_name:
+  #   - acp-log-stream
+  #   - stream-2
+  #
+  # You can supply a list value to the CLI using {a,b,c} notation
+  # The example above would be written as follows: --set logs.exclude_file="{acp-log-stream,stream-2}"
+  # N.B.: comma-separated, no space characters, double quotes surrounding the curly braces.

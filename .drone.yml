@@ -1,0 +1,21 @@
+---
+kind: pipeline
+name: default
+type: kubernetes
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: validate
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/alpine-helm:3.4.2
+  commands:
+  - chmod +x scripts/deploy.sh
+  - scripts/deploy.sh --dry-run
+  when:
+    event:
+    - push
+    - pull_request
+    - promote

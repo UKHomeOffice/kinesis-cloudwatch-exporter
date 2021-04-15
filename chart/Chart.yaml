@@ -1,0 +1,4 @@
+apiVersion: v2
+name: cloudwatch-exporter
+version: 0.1.0
+description: cloudwatch-exporter and ancillary resources, for exposing cloudwatch metrics in prometheus format

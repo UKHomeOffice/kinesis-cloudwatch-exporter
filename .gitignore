@@ -1,0 +1,4 @@
+.idea
+index.yaml
+*.tgz
+.DS_Store

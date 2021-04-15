@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudwatch-exporter
+  labels:
+    app: cloudwatch-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudwatch-exporter
+  template:
+    metadata:
+      labels:
+        app: cloudwatch-exporter
+      annotations:
+        prometheus.io/path: "/metrics"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: '9106'
+        prometheus.io/scheme: "http"
+    spec:
+      securityContext:
+        runAsUser: 1000
+      containers:
+      - name: cloudwatch-exporter
+        image: {{ .Values.cwe.image }}:{{ .Values.cwe.image_tag }}
+        env:
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: cloudwatch-exporter
+                key: access-key
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: cloudwatch-exporter
+                key: secret-key
+        volumeMounts:
+          - name: config
+            mountPath: /config/
+        ports:
+        - containerPort: 9106
+        resources:
+          limits:
+            memory: {{ .Values.cwe.memory_limit | quote }}
+            cpu: {{ .Values.cwe.cpu_limit | quote }}
+          requests: 
+            memory: {{ .Values.cwe.memory_request | quote }}
+            cpu: {{ .Values.cwe.cpu_request | quote }}
+      volumes:
+        - name: config
+          configMap:
+           name: cloudwatch-exporter
