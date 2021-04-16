@@ -49,3 +49,9 @@ data:
         aws_dimension_select:
           StreamName: [{{- range .Values.kinesis.stream_name }}{{ . | quote }},{{- end }}]
         aws_statistics: [Average]
+      - aws_namespace: AWS/KinesisAnalytics 
+        aws_metric_name: MillisBehindLatest
+        aws_dimensions: [Application]
+        aws_dimension_select:
+          StreamName: [{{- range .Values.kinesis.application_name }}{{ . | quote }},{{- end }}]
+        aws_statistics: [Maximum, Minimum, Average, p95, p90]

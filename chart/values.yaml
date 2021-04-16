@@ -9,7 +9,8 @@ cwe:
 
 kinesis:
   stream_name:
-  # This parameter expects a list. For example:
+  application_name:
+  # These parameters expect list values. For example:
   # 
   # stream_name:
   #   - acp-log-stream
